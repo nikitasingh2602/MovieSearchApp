@@ -1,97 +1,163 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# 🎬 Movie Search Mobile App
 
-# Getting Started
+A React Native application that allows users to search for movies, view details, and save favorites. It fetches movie data from the **OMDb API** and provides a smooth user experience.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## 🚀 Features
 
-## Step 1: Start Metro
+✅ Search movies by title using the **OMDb API**  
+✅ Display movie posters, titles, and ratings in a list view  
+✅ Tap on a movie to view detailed information (poster, title, year, genre, rating)  
+✅ Save favorite movies using `AsyncStorage`  
+✅ Load more movies when scrolling to the bottom  
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## 🛠️ Tech Stack
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+- **React Native** - Cross-platform mobile development  
+- **React Navigation** - For seamless navigation  
+- **AsyncStorage** - To store favorite movies locally  
+- **Axios** - For API requests  
+- **FlatList** - Efficient rendering of movie lists  
 
-```sh
-# Using npm
-npm start
+---
 
-# OR using Yarn
-yarn start
-```
+## 📦 Installation
 
-## Step 2: Build and run your app
-
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+### 1️⃣ Clone the Repository
 
 ```sh
-bundle install
+git clone https://github.com/yourusername/MovieSearchApp.git
+cd MovieSearchApp
 ```
 
-Then, and every time you update your native dependencies, run:
+### 2️⃣ Install Dependencies
 
 ```sh
-bundle exec pod install
+npm install
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+### 3️⃣ Configure the API Key  
 
+Open `api.js` and replace `"YOUR_API_KEY_HERE"` with your actual **OMDb API Key**.
+
+```javascript
+export const API_KEY = "YOUR_API_KEY_HERE";
+export const BASE_URL = "https://www.omdbapi.com/";
+```
+
+### 4️⃣ Run the Application
+
+For **Android**:
 ```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
+npx react-native run-android
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+For **iOS**:
+```sh
+npx react-native run-ios
+```
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+---
 
-## Step 3: Modify your app
+## 📸 Screenshots
 
-Now that you have successfully run the app, let's make changes!
+| Home Screen | Movie Details | Favorites |
+|-------------|--------------|-----------|
+| ![Home](screenshots/home.png) | ![Details](screenshots/details.png) | ![Favorites](screenshots/favorites.png) |
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+---
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+## 📌 Folder Structure
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+```
+MovieSearchApp/
+│-- components/
+│   ├── MovieCard.js        # Renders each movie item in the list
+│   ├── SearchBar.js        # Custom search bar component
+│-- screens/
+│   ├── HomeScreen.js       # Displays search results
+│   ├── DetailsScreen.js    # Shows detailed movie information
+│   ├── FavoritesScreen.js  # Displays user’s favorite movies
+│-- navigation.js           # Manages app navigation
+│-- api.js                  # Stores API key and fetch logic
+│-- App.tsx                 # Main entry point
+│-- package.json            # Project dependencies
+```
 
-## Congratulations! :tada:
+---
 
-You've successfully run and modified your React Native App. :partying_face:
+## 📌 API Integration
 
-### Now what?
+This app uses the **OMDb API** to fetch movie data. The API call is structured as follows:
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+### API Endpoint
+```
+https://www.omdbapi.com/?apikey=YOUR_API_KEY&s=MOVIE_TITLE
+```
 
-# Troubleshooting
+### Example Fetch Request (Using Axios)
+```javascript
+import axios from 'axios';
+import { API_KEY, BASE_URL } from './api';
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+const fetchMovies = async (searchQuery) => {
+    try {
+        const response = await axios.get(`${BASE_URL}?apikey=${API_KEY}&s=${searchQuery}`);
+        return response.data.Search;
+    } catch (error) {
+        console.error("Error fetching movies:", error);
+    }
+};
+```
 
-# Learn More
+---
 
-To learn more about React Native, take a look at the following resources:
+## 📌 Screens and Functionalities
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+### **1️⃣ Home Screen**
+- Displays a search bar at the top.
+- Lists movies with posters, titles, and ratings.
+- Supports infinite scrolling.
+
+### **2️⃣ Movie Details Screen**
+- Shows movie poster, title, year, genre, and rating.
+- Displays more detailed movie information.
+
+### **3️⃣ Favorites Screen**
+- Allows users to view and manage saved favorite movies.
+- Uses `AsyncStorage` to persist data across app restarts.
+
+### **4️⃣ Infinite Scroll (Load More)**
+- Automatically loads more movies when the user reaches the bottom of the list.
+
+---
+
+## 📌 Future Improvements
+
+✅ Implement a dark mode  
+✅ Add user authentication for personalized favorites  
+✅ Enhance UI with animations  
+
+---
+
+## 📌 Troubleshooting
+
+### Common Issues & Fixes
+
+1️⃣ **Metro Bundler Not Starting**  
+   - Run `npx react-native start` before running the app.
+
+2️⃣ **"Cannot find module" Error**  
+   - Ensure all dependencies are installed with `npm install`.
+
+3️⃣ **App Crashes on API Call**  
+   - Ensure that `api.js` contains a valid **OMDb API key**.
+
+---
+
+## 📜 License
+
+This project is **open-source** and available under the **MIT License**.
+
+---
+
+🚀 **Happy Coding! 🎥✨**
